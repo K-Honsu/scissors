@@ -1,5 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import { config } from "dotenv";
+import dotenv from "dotenv"
+dotenv.config()
 
 const connect = async (url?: string): Promise<void> => {
     try {

@@ -10,7 +10,16 @@ interface Hit {
     as?: string;
 }
 
-interface Link extends Document {
+// interface Link extends Document {
+//     url: string;
+//     description?: string;
+//     alias: string;
+//     createdBy: Schema.Types.ObjectId;
+//     hits: Hit[];
+//     createdAt: Date;
+// }
+
+export interface LinkDocument {
     url: string;
     description?: string;
     alias: string;
@@ -19,4 +28,4 @@ interface Link extends Document {
     createdAt: Date;
 }
 
-export default Link;
+// export default Link;

@@ -1,9 +1,10 @@
 import { userMiddleware } from "./user.middleware";
-import { createUser } from "./user.contoller";
+import { createUser, getAccount } from "./user.contoller";
 import { Router } from "express";
 
-const userRouter = Router()
+const userRouter = Router({ mergeParams: true })
 
-userRouter.post("/", userMiddleware, createUser)
+// userRouter.post("/", userMiddleware, createUser)
+userRouter.route("/").post(userMiddleware, createUser).get(getAccount)
 
 export default userRouter
