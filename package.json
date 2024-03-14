@@ -2,13 +2,15 @@
   "name": "scissors",
   "version": "1.0.0",
   "description": "An Application to shorten url links",
-  "main": "./src/server.ts",
+  "main": "./src/server.mjs",
   "scripts": {
     "test": "jest --detectOpenHandles",
     "build:dev": "tsc -p tsconfig.json",
     "clean": "rimraf ./dist tsconfig.tsbuildinfo",
-    "dev": "npm run clean && rimraf tsconfig.tsbuildinfo && npm run build:dev && nodemon ./src/server.ts",
-    "start": "node ./dist/server.ts"
+    "dev": "npm run clean && rimraf tsconfig.tsbuildinfo && npm run build:dev && node ./src/server.ts",
+    "start": "node ./dist/server.ts",
+    "start:prod": "npm run clean && rimraf tsconfig.tsbuildinfo && npm run build:prod && node dist/server.js",
+    "build:prod": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
