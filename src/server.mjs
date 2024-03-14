@@ -6,9 +6,9 @@ import dotenv from "dotenv"
 dotenv.config()
 
 
-const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
-const mongodbUri: any = process.env.MONGODB_URI ?? '';
-const server: http.Server = http.createServer(app);
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3000
+const mongodbUri = process.env.MONGODB_URI ?? '';
+const server = http.createServer(app);
 
 
 
