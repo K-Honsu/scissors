@@ -57,6 +57,6 @@ userSchema.methods.IsValidPassword = async function (password: string): Promise<
 }
 
 
-const User = model<User>("User", userSchema)
+const userModel = model<User>("User", userSchema)
 
-export default User
+export default userModel

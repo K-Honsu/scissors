@@ -1,4 +1,4 @@
-import User from "../models/user"
+import userModel from "../models/user"
 import { Response, Request, NextFunction } from "express"
 import Jwt from "jsonwebtoken"
 import "./auth.interfaces"
@@ -11,7 +11,7 @@ const Login = async (req: Request, res: Response) => {
     try {
         const { email, password:userPassword } = req.body
 
-        const user = await User.findOne({ email: email })
+        const user = await userModel.findOne({ email: email })
         if (!user) return res.status(404).json({
             status: "Error",
             message: "User information not found"
@@ -48,7 +48,7 @@ const BearerToken = async (req: Request, res: Response, next: NextFunction) => {
         }
         const token = headers.authorization.split(" ")[1]
         const decoded = Jwt.verify(token, jwt_token) as { _id: string };
-        const user = await User.findOne({ _id: decoded._id })
+        const user = await userModel.findOne({ _id: decoded._id })
         if (!user) {
             return res.status(400).json({
                 status: "error",

@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import User from "../models/user";
+import userModel from "../models/user";
 
 const createUser = async (req: Request, res: Response) => {
     try {
-        const { username, password: userPassword, email } = req.body
-        const existingUser = await User.findOne({ email }).exec()
+        const { username, password:userPassword, email } = req.body
+        const existingUser = await userModel.findOne({ email }).exec()
         if (existingUser) {
             return res.status(400).json({
                 status: "false",
                 message: "User with this email address already exist"
             })
         }
-        const user = await User.create({ username, email, password: userPassword })
+        const user = await userModel.create({ username, email, password:userPassword })
         const { password, ...others } = user.toObject()
         return res.status(201).json({
             status: "success",
@@ -19,7 +19,7 @@ const createUser = async (req: Request, res: Response) => {
             data: others
         })
     } catch (error: any) {
-        console.error(error)
+        // console.error(error)
         return res.status(500).json({
             status: "false",
             message: error.message
@@ -29,7 +29,7 @@ const createUser = async (req: Request, res: Response) => {
 
 const getAccount = async (req: Request, res: Response) => {
     try {
-        const user = await User.findById(req.user._id)
+        const user = await userModel.findById(req.user._id)
             .select("-password")
             .lean()
             .exec();
@@ -46,7 +46,7 @@ const getAccount = async (req: Request, res: Response) => {
             data: user,
         });
     } catch (error: any) {
-        console.error(error)
+        // console.error(error)
         return res.status(500).json({
             status: "error",
             message: error.message
