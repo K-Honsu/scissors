@@ -4,7 +4,7 @@ const doc = {
         title: 'Clutter - Cut the Clutter, Share the Flair',
         description: 'API documentation of all endpoints.',
     },
-    host: 'localhost:8001',
+    host: 'https://scissors-kl37.onrender.com',
     schemes: ['http'],
 };
 
