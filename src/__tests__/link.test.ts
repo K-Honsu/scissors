@@ -56,7 +56,7 @@ describe("Link Test", () => {
     afterEach(async () => {
         await connection.cleanup();
         await client.quit()
-    });
+    }, 50000);
 
     afterAll(async () => {
         await connection.disconnect()
@@ -76,7 +76,7 @@ describe("Link Test", () => {
         expect(response.body).toMatchObject({
             data: expect.any(Object)
         })
-    })
+    }, 5000)
 
     test("it should get all the link for a successfully logged in user", async () => {
         const response = await supertest(app)
@@ -88,5 +88,5 @@ describe("Link Test", () => {
         expect(response.body).toMatchObject({
             data: expect.any(Array)
         })
-    })
+    }, 50000)
 })

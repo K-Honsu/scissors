@@ -1,6 +1,7 @@
 {
   "name": "scissors",
   "version": "1.0.0",
+  "type": "module",
   "description": "An Application to shorten url links",
   "main": "./src/server.ts",
   "scripts": {
