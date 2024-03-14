@@ -5,7 +5,7 @@ var doc = {
         description: 'API documentation of all endpoints.',
     },
     host: 'scissors-kl37.onrender.com',
-    schemes: ['http'],
+    schemes: ['https'],
 };
 var outputFile = '../../swagger-output.json';
 var endpointsFiles = ['../../main.ts']; // Update file extension to .ts

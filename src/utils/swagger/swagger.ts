@@ -5,7 +5,7 @@ const doc = {
         description: 'API documentation of all endpoints.',
     },
     host: 'scissors-kl37.onrender.com',
-    schemes: ['http'],
+    schemes: ['https'],
 };
 
 const outputFile = '../../swagger-output.json';
