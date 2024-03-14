@@ -4,7 +4,7 @@ var doc = {
         title: 'Clutter - Cut the Clutter, Share the Flair',
         description: 'API documentation of all endpoints.',
     },
-    host: 'https://scissors-kl37.onrender.com',
+    host: 'scissors-kl37.onrender.com',
     schemes: ['http'],
 };
 var outputFile = '../../swagger-output.json';
