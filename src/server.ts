@@ -1,9 +1,13 @@
-import app from "./main"
-import express from "express"
-import { connect } from "./config/db"
-import http from "http"
-import dotenv from "dotenv"
-dotenv.config()
+// import app from "./main"
+const app = require("../src/main")
+// import express from "express"
+const express = require("express")
+// import { connect } from "./config/db"
+const { connect } = require("./config/db")
+// import http from "http"
+const http = require("http")
+// import dotenv from "dotenv"
+const dotenv = require("dotenv").config()
 
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000
