@@ -8,7 +8,7 @@
   "host": "scissors-kl37.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/user/": {
