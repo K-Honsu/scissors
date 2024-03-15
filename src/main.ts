@@ -4,6 +4,7 @@ import { globalRateLimiter } from "./utils/rateLimiter/rateLimit"
 import geminiRouter from "./utils/AI/gemini.router"
 import morgan from "morgan"
 import authRouter from "./auth/auth.router"
+import cors from "cors"
 import linkRouter from "./link/link.router"
 import userRouter from "./user/user.router"
 import swaggerDocument from "../src/swagger-output.json";
@@ -12,6 +13,7 @@ dotenv.config()
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
