@@ -160,8 +160,8 @@ const generateQR = async (req: Request, res: Response) => {
 
 const getAliasForLink = async (req: Request, res: Response) => {
     try {
-        const { alias } = req.params
-        const existingLink = await linkModel.findOne({ alias }).exec()
+        const { linkalias } = req.params
+        const existingLink = await linkModel.findOne({ alias: linkalias }).exec()
         if (!existingLink) return res.status(404).json({
             status: false,
             message: "Link alias not found"

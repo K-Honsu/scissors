@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction, Application, ErrorRequestHand
 import dotenv from "dotenv"
 import { globalRateLimiter } from "./utils/rateLimiter/rateLimit"
 import geminiRouter from "./utils/AI/gemini.router"
+import { getAliasForLink } from "./link/link.controller"
 import morgan from "morgan"
 import authRouter from "./auth/auth.router"
 import cors from "cors"
@@ -21,6 +22,7 @@ app.use(morgan("tiny"))
 app.use(globalRateLimiter)
 app.use("/user", userRouter)
 app.use("/auth", authRouter)
+app.use("/", getAliasForLink)
 app.use("/link", linkRouter)
 app.use("/gemini", geminiRouter)
 

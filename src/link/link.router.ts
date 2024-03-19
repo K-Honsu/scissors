@@ -8,7 +8,7 @@ const linkRouter = Router({ mergeParams: true })
 linkRouter.route("/").post(BearerToken, linkMiddleware, createLink).get(BearerToken, getLinks)
 
 linkRouter.get("/:alias", BearerToken, generateQR)
-linkRouter.get("/:link-alias", getAliasForLink)
+linkRouter.get("/:linkalias", getAliasForLink)
 linkRouter.delete("/:id", BearerToken, deleteLink)
 
 export default linkRouter
