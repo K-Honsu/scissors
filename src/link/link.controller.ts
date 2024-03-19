@@ -68,23 +68,23 @@ const getLinks = async (req: Request, res: Response) => {
         });
 
         // Cache the data if it's not already cached
-        const cachedData: any = await client.hGetAll(userId.toString());
-        if (!cachedData) {
-            const linksObject = {};
-            // @ts-ignore
-            links.forEach(link => {
-                // @ts-ignore
-                linksObject[link._id] = true;
-                // @ts-ignore
-                linksObject[link.url] = true;
-                // @ts-ignore
-                linksObject[`${baseUrl}/${link.alias}`] = true;
-            });
-            await client.hSet(userId.toString(), linksObject);
-            console.log(`Data for user ${userId} has been cached`);
-        } else {
-            console.log(`Data for user ${userId} retrieved from cache`);
-        }
+        // const cachedData: any = await client.hGetAll(userId.toString());
+        // if (!cachedData) {
+        //     const linksObject = {};
+        //     // @ts-ignore
+        //     links.forEach(link => {
+        //         // @ts-ignore
+        //         linksObject[link._id] = true;
+        //         // @ts-ignore
+        //         linksObject[link.url] = true;
+        //         // @ts-ignore
+        //         linksObject[`${baseUrl}/${link.alias}`] = true;
+        //     });
+        //     await client.hSet(userId.toString(), linksObject);
+        //     console.log(`Data for user ${userId} has been cached`);
+        // } else {
+        //     console.log(`Data for user ${userId} retrieved from cache`);
+        // }
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
