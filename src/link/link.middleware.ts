@@ -6,8 +6,7 @@ const linkMiddleware = async (req: Request, res: Response, next: NextFunction) =
         const data = req.body
         const rules = {
             url: "required|min:6",
-            description: 'required|string|min:4',
-            alias: 'required|min:6|max:6',
+            description: 'required|string|min:4'
         }
         let validation = new Validator(data, rules)
         if (!validation.passes()) {
