@@ -51,12 +51,15 @@ const createLink = async (req: Request, res: Response) => {
             status: false,
             message: `Sorry, the alias (${alias}) has already been used`
         })
-        const baseUrl = req.protocol + '://' + req.get('host');
-        const linkUrl = alias ? `${baseUrl}/${alias}` : `${baseUrl}/${randomstring.generate(6)}`;
+        if (!url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
         // Create the link
         const link = await linkModel.create({ url, description, alias, createdBy: foundUser._id });
         foundUser.links.push(link.id);
         await foundUser.save();
+        const baseUrl = req.protocol + '://' + req.get('host');
+        const linkUrl = alias ? `${baseUrl}/${alias}` : `${baseUrl}/${randomstring.generate(6)}`;
         return res.status(201).json({
             status: true,
             message: "Link created succesfully",
