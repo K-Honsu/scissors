@@ -5,6 +5,30 @@ import client from "../utils/Cache/redis";
 import QRCode from 'qrcode'
 import e, { Request, Response } from "express";
 
+interface RequestQuery {
+    descriptionQ?: string;
+    // Add other query parameters if needed
+}
+
+const createLinkForUnautheticatedUser = async (req: Request, res: Response) => {
+    try {
+        let { url, alias } = req.body
+        if (!alias) {
+            alias = randomstring.generate({
+                length: 6,
+                charset: "alphabetic",
+            })
+        }
+        const linkExists = await linkModel.findOne({ alias }).exec()
+        if (linkExists) return res.status(403).json({
+            status: false,
+            message: `Sorry, the alias (${alias}) has already been used`
+        })
+    } catch (error) {
+
+    }
+}
+
 const createLink = async (req: Request, res: Response) => {
     try {
         let { url, description, alias } = req.body
@@ -23,7 +47,7 @@ const createLink = async (req: Request, res: Response) => {
         }
         // Check to see if link exists
         const linkExists = await linkModel.findOne({ alias }).exec()
-        if (linkExists) return res.status(409).json({
+        if (linkExists) return res.status(403).json({
             status: false,
             message: `Sorry, the alias (${alias}) has already been used`
         })
@@ -47,18 +71,25 @@ const createLink = async (req: Request, res: Response) => {
     }
 }
 
-const getLinks = async (req: Request, res: Response) => {
+const getLinks = async (req: Request<{}, {}, {}, RequestQuery>, res: Response) => {
     try {
         const userId: string = req.user._id
-        const userLinks = await linkModel.find({ createdBy: userId }).lean().exec()
+        const { descriptionQ } = req.query;
+        const query = { createdBy: userId };
+
+        if (descriptionQ) {
+            // @ts-ignore
+            query['description'] = { $regex: descriptionQ, $options: 'i' };
+        }
+        const userLinks = await linkModel.find(query).lean().exec()
         const baseUrl = req.protocol + '://' + req.get('host');
         const links = userLinks.map((link: any) => {
             return {
                 id: link?._id,
                 url: link?.url,
-                description : link?.description,
+                description: link?.description,
                 alias: `${baseUrl}/${link.alias}`,
-                created_at : link?.created_at
+                created_at: link?.createdAt
             };
         });
 
@@ -145,7 +176,7 @@ const getAliasForLink = async (req: Request, res: Response) => {
 const deleteLink = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const link:any = await linkModel.findOne({ _id: id }).exec()
+        const link: any = await linkModel.findOne({ _id: id }).exec()
         if (!link) return res.status(404).json({
             status: false,
             message: "Link does not exist"
