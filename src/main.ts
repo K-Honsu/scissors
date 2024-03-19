@@ -22,7 +22,7 @@ app.use(morgan("tiny"))
 app.use(globalRateLimiter)
 app.use("/user", userRouter)
 app.use("/auth", authRouter)
-app.use("/", getAliasForLink)
+app.get("/:linkalias", getAliasForLink);
 app.use("/link", linkRouter)
 app.use("/gemini", geminiRouter)
 
