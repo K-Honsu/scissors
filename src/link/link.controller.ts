@@ -56,6 +56,7 @@ const getLinks = async (req: Request, res: Response) => {
             return {
                 id: link?._id,
                 url: link?.url,
+                description : link?.description,
                 alias: `${baseUrl}/${link.alias}`
             };
         });
