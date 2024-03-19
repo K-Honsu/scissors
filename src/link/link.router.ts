@@ -5,8 +5,10 @@ import { Router } from "express";
 
 const linkRouter = Router({ mergeParams: true })
 
-linkRouter.route("/").post(BearerToken, linkMiddleware, createLink).get(BearerToken, getLinks)
+// linkRouter.route("/").post(BearerToken, linkMiddleware, createLink).get(BearerToken, getLinks)
 
+linkRouter.post("/create", BearerToken, linkMiddleware, createLink)
+linkRouter.get("/links", BearerToken, getLinks)
 linkRouter.get("/:alias", BearerToken, generateQR)
 linkRouter.delete("/:id", BearerToken, deleteLink)
 
