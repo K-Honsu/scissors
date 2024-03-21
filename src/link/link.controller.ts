@@ -183,4 +183,27 @@ const deleteLink = async (req: Request, res: Response) => {
     }
 }
 
-export { createLink, generateQR, getLinks, deleteLink }
+const getHitsConfig = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const existingLink = await linkModel.findOne({ _id: id }).exec()
+        if (!existingLink) return res.status(404).json({
+            status: false,
+            message: "Link does not exist"
+        })
+        const totalHitsCount = existingLink.hits.length
+        return res.status(200).json({
+            status: true,
+            message: "Link information retrreived successfully",
+            hits: existingLink.hits,
+            totalCount: totalHitsCount
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+export { createLink, generateQR, getLinks, deleteLink, getHitsConfig }
