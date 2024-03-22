@@ -41,7 +41,6 @@ const linkSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
     },
     hits: [hitSchema]  // Store information on all hits
 

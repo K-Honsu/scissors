@@ -7,7 +7,6 @@ import e, { Request, Response } from "express";
 
 interface RequestQuery {
     descriptionQ?: string;
-    // Add other query parameters if needed
 }
 
 const createLinkForUnautheticatedUser = async (req: Request, res: Response) => {
@@ -24,8 +23,23 @@ const createLinkForUnautheticatedUser = async (req: Request, res: Response) => {
             status: false,
             message: `Sorry, the alias (${alias}) has already been used`
         })
-    } catch (error) {
-
+        if (!url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+        // Create the link
+        const link = await linkModel.create({ url, alias });
+        const baseUrl = req.protocol + '://' + req.get('host');
+        const linkUrl = alias ? `${baseUrl}/${alias}` : `${baseUrl}/${randomstring.generate(6)}`;
+        return res.status(201).json({
+            status: true,
+            message: "Link created succesfully",
+            data: { linkUrl, link }
+        })
+    } catch (error: any) {
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
     }
 }
 
@@ -206,4 +220,4 @@ const getHitsConfig = async (req: Request, res: Response) => {
     }
 }
 
-export { createLink, generateQR, getLinks, deleteLink, getHitsConfig }
+export { createLink, generateQR, getLinks, deleteLink, createLinkForUnautheticatedUser, getHitsConfig }
