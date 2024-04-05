@@ -2,7 +2,9 @@ import linkModel from "../models/link";
 import userModel from "../models/user";
 import randomstring from "randomstring"
 import client from "../utils/Cache/redis";
+import fs from "fs"
 import QRCode from 'qrcode'
+import { uploadToCloudinary } from "../utils/Cloudinary/cloudinary";
 import e, { Request, Response } from "express";
 
 interface RequestQuery {
@@ -146,31 +148,62 @@ const getLinks = async (req: Request<{}, {}, {}, RequestQuery>, res: Response) =
 
 const generateQR = async (req: Request, res: Response) => {
     try {
-        // const text = req.params.alias
-        const { alias } = req.params
-        const existingLink = await linkModel.findOne({ alias }).exec()
+        const { alias } = req.params;
+        const existingLink = await linkModel.findOne({ alias }).exec();
         if (!existingLink) return res.status(404).json({
             status: false,
             message: "Link alias not found"
-        })
-        const { url } = existingLink
-        // @ts-ignore
+        });
+
+        const { url } = existingLink;
         const qrCodeFilePath = `./${alias}.png`;
         await QRCode.toFile(qrCodeFilePath, url);
 
-        // Send the file path to the client
+        const cloudinaryUrl = await uploadToCloudinary({
+            buffer: fs.readFileSync(qrCodeFilePath)
+        });
+
+        existingLink.path = cloudinaryUrl;
+        existingLink.cloudinaryId = "heyo"
+        await existingLink.save();
+
+        fs.unlinkSync(qrCodeFilePath)
+
         return res.status(200).json({
             status: true,
-            message: "QR code generated",
-            data: qrCodeFilePath
+            message: "QR code generated and uploaded to Cloudinary",
+            data: cloudinaryUrl
         });
+
     } catch (error: any) {
         return res.status(500).json({
             status: false,
             message: error.message
+        });
+    }
+};
+
+const getQrCodePath = async (req: Request, res: Response) => {
+    try {
+        const { alias } = req.params;
+        const existingLink = await linkModel.findOne({ alias }).exec();
+        if (!existingLink) return res.status(404).json({
+            status: false,
+            message: "Link alias not found"
+        });
+        return res.status(200).json({
+            status: true,
+            message: "Qr code gotten",
+            data: existingLink.path
         })
+    } catch (error: any) {
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        });
     }
 }
+
 
 
 
@@ -220,4 +253,4 @@ const getHitsConfig = async (req: Request, res: Response) => {
     }
 }
 
-export { createLink, generateQR, getLinks, deleteLink, createLinkForUnautheticatedUser, getHitsConfig }
+export { createLink, generateQR, getLinks, deleteLink, createLinkForUnautheticatedUser, getHitsConfig, getQrCodePath }
