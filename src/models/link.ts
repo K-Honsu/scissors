@@ -33,7 +33,7 @@ const linkSchema = new Schema({
     },
     description: String,  // Optional description of link
     cloudinaryId: { type: String },
-    path: { type: String, required: true },
+    path: { type: String },
     alias: {
         type: String,
         required: true,
