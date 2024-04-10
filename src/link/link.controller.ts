@@ -74,7 +74,8 @@ const createLink = async (req: Request, res: Response) => {
         const link = await linkModel.create({ url, description, alias, createdBy: foundUser._id });
         foundUser.links.push(link.id);
         await foundUser.save();
-        const baseUrl = req.protocol + '://' + req.get('host');
+        // const baseUrl = req.protocol + '://' + req.get('host');
+        const baseUrl: string = "https://clutter.ly"
         const linkUrl = alias ? `${baseUrl}/${alias}` : `${baseUrl}/${randomstring.generate(6)}`;
         return res.status(201).json({
             status: true,
