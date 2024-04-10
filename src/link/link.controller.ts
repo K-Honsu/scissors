@@ -75,7 +75,7 @@ const createLink = async (req: Request, res: Response) => {
         foundUser.links.push(link.id);
         await foundUser.save();
         // const baseUrl = req.protocol + '://' + req.get('host');
-        const baseUrl: string = "https://clutter.ly"
+        const baseUrl: string = "https://clutter.com"
         const linkUrl = alias ? `${baseUrl}/${alias}` : `${baseUrl}/${randomstring.generate(6)}`;
         return res.status(201).json({
             status: true,
@@ -103,7 +103,7 @@ const getLinks = async (req: Request<{}, {}, {}, RequestQuery>, res: Response) =
         }
         const userLinks = await linkModel.find(query).lean().exec()
         // const baseUrl = req.protocol + '://' + req.get('host');
-        const baseUrl: string = "https://clutter.ly"
+        const baseUrl: string = "https://clutter.com"
         const links = userLinks.map((link: any) => {
             return {
                 id: link?._id,
