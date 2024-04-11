@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express"
+import { getAliasForLink } from "./single.controller"
 import Validator from "validatorjs"
 
 const linkMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,10 +19,29 @@ const linkMiddleware = async (req: Request, res: Response, next: NextFunction) =
         next()
     } catch (error: any) {
         return res.status(422).json({
-            success: false,
+            status: false,
             message: error.message
         })
     }
 }
+
+// export const redirectMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const { host, originalUrl } = req.headers;
+//         const isClutterlyURL =
+//             host === "clutter.ly" || host === "www.clutter.ly";
+//         if (isClutterlyURL && typeof originalUrl === 'string') {
+//             const linkAlias = originalUrl.split("/").pop();
+//             // @ts-ignore
+//             req.params.linkalias = linkAlias;
+//         }
+//         next();
+//     } catch (error: any) {
+//         return res.status(500).json({
+//             status: false,
+//             message: error.message
+//         })
+//     }
+// }
 
 export { linkMiddleware }

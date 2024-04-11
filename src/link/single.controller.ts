@@ -17,12 +17,7 @@ export const getAliasForLink = async (req: Request, res: Response) => {
             userAgent: req.headers["user-agent"]
         })
         await existingLink.save()
-        // return res.redirect(existingLink.url)
-        return res.status(200).json({
-            status : true,
-            message : "URL gotten..",
-            data : existingLink.url
-        })
+        return res.redirect(existingLink.url)
     } catch (error: any) {
         console.error(error)
         return res.status(500).json({
