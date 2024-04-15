@@ -5,6 +5,6 @@ import { Router } from "express";
 const geminiRouter = Router({ mergeParams: true })
 
 // userRouter.post("/", userMiddleware, createUser)
-geminiRouter.route("/chat").get(BearerToken ,generateResponse)
+geminiRouter.route("/chat").post(BearerToken ,generateResponse)
 
 export default geminiRouter
