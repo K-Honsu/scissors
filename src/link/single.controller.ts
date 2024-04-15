@@ -14,7 +14,7 @@ export const getAliasForLink = async (req: Request, res: Response) => {
             type: "click",
             ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
             // referrer: req.get('Referrer'),
-            userAgent: req.headers["user-agent"]
+            userAgent: req.headers["user-agent"],
         })
         await existingLink.save()
         return res.redirect(existingLink.url)

@@ -238,10 +238,25 @@ const getHitsConfig = async (req: Request, res: Response) => {
             status: false,
             message: "Link does not exist"
         })
+        const hitsByMonth: { [key: string]: number } = {}; // Object to store hits count for each month
+
+        existingLink.hits.forEach(hit => {
+            // @ts-ignore
+            const createdAt = new Date(hit.createdAt);
+            const month = createdAt.toLocaleDateString('en-US', { month: 'long' }); // Get month name
+
+            if (hitsByMonth[month]) {
+                hitsByMonth[month] += 1;
+            } else {
+                hitsByMonth[month] = 1;
+            }
+        });
         const totalHitsCount = existingLink.hits.length
         return res.status(200).json({
             status: true,
             message: "Link information retrreived successfully",
+            month: Object.keys(hitsByMonth)[0],
+            numOfClicks: Object.values(hitsByMonth)[0],
             hits: existingLink.hits,
             totalCount: totalHitsCount
         });
