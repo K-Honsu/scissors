@@ -25,8 +25,10 @@ const userSchema = new Schema<User>({
         },
     },
     password: {
-        type: String,
-        required: true
+        type: String
+    },
+    googleId : {
+        type : String
     },
     links: [{
         type: Schema.Types.ObjectId,
@@ -42,7 +44,7 @@ const userSchema = new Schema<User>({
 
 
 // Hash passwords
-userSchema.pre<User>("save", async function (next) {
+userSchema.pre<User>("save", async function (next: () => void) {
     const user = this
     if (!user.isModified("password")) return next(); // Skip if password is not modified
     const hash = await bcrypt.hash(this.password, 10)

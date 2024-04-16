@@ -7,6 +7,7 @@ export interface User extends Document {
     password: string;
     links: Schema.Types.ObjectId[];
     totalHits: number;
+    googleId : string,
     IsValidPassword: (password: string) => Promise<boolean>;
 }
 

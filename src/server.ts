@@ -3,6 +3,7 @@ import app from "./main"
 import express from "express"
 // const express = require("express")
 import { connect } from "./config/db"
+import "./utils/Oauth/passport"
 // const { connect } = require("./config/db")
 import http from "http"
 // const http = require("http")
