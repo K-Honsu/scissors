@@ -4,6 +4,7 @@ import { globalRateLimiter } from "./utils/rateLimiter/rateLimit"
 import geminiRouter from "./utils/AI/gemini.router"
 import singleRouter from "./link/single.router"
 import passportRouter from "./utils/Oauth/router/route"
+import { myCorsOptions } from "./utils/Cors"
 import "./utils/Oauth/passport"
 import morgan from "morgan"
 import authRouter from "./auth/auth.router"
@@ -19,7 +20,7 @@ const sessionSecret = process.env.SESSION_SECRET ?? ""
 
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors(myCorsOptions))
 app.use(session({ secret: sessionSecret, cookie: { maxAge: 60000 }, resave: true, saveUninitialized: true }))
 app.use(express.urlencoded({ extended: true }));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
