@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { connect, DatabaseConnection } from "../database";
 import userModel from "../models/user";
 import linkModel from "../models/link";
-import client from "../utils/Cache/redis";
+import { client } from "../utils/Cache/Redis/index"
 import app from "../main";
 
 

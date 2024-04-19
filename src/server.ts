@@ -1,14 +1,10 @@
 import app from "./main"
-// const app = require("./main")
 import express from "express"
-// const express = require("express")
 import { connect } from "./config/db"
 import "./utils/Oauth/passport"
-// const { connect } = require("./config/db")
 import http from "http"
-// const http = require("http")
+import { client } from "./utils/Cache/Redis/index"
 import dotenv from "dotenv"
-// const dotenv = require("dotenv").config()
 dotenv.config()
 
 
@@ -29,5 +25,6 @@ async function createServer() {
 
 
 createServer()
+client.connect()
 
 export default createServer

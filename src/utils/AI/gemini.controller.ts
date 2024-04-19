@@ -8,7 +8,6 @@ const generateResponse = async (req: Request, res: Response) => {
         const result = await model.generateContent(prompt);
         const response = result.response;
         const text = response.text();
-        console.log({ "text": text })
         return res.status(200).json({
             status: true,
             message: "Message generated successfully",

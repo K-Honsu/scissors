@@ -9,7 +9,6 @@ export const getAliasForLink = async (req: Request, res: Response) => {
             status: false,
             message: "Link alias not found"
         })
-        console.log({ "existingLink": req.headers })
         existingLink.hits.push({
             type: "click",
             ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,

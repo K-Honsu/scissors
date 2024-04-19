@@ -26,7 +26,8 @@ passport.use(
     new GoogleStrategy({
         clientID: clientId,
         clientSecret: clientSecret,
-        callbackURL: "https://scissors-kl37.onrender.com/oauth/auth/google/redirect"
+        // callbackURL: "https://scissors-kl37.onrender.com/oauth/auth/google/redirect"
+        callbackURL: "http://localhost:5173/dashboard"
     },
         async (accessToken: string, refreshToken: string, profile: any, done: any) => {
             try {
