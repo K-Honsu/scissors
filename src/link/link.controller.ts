@@ -1,7 +1,9 @@
 import linkModel from "../models/link";
 import userModel from "../models/user";
 import randomstring from "randomstring"
-import { client } from "../utils/Cache/Redis/index";
+// import { MyCache } from "../utils/Cache/Redis/index";
+import { MyCache } from "../utils/Cache/Redis";
+import { client } from "../utils/Cache/Redis/index1";
 import fs from "fs"
 import QRCode from 'qrcode'
 import { uploadToCloudinary } from "../utils/Cloudinary/cloudinary";
@@ -103,7 +105,9 @@ const getLinks = async (req: Request<{}, {}, {}, RequestQuery>, res: Response) =
         }
 
         // Check if the response is already cached
-        const cacheResults = await client.get(userId.toString());
+        // const cacheResults = await client.get(userId.toString());
+        const cacheResults: any = await client.getKey(userId.toString())
+
         if (cacheResults) {
             const data = JSON.parse(cacheResults);
             return res.status(200).json({
@@ -112,31 +116,34 @@ const getLinks = async (req: Request<{}, {}, {}, RequestQuery>, res: Response) =
                 message: "Links retrieved from cache successfully",
                 data: data
             });
+        } else {
+
+            // If the response is not cached, fetch it from the database
+            const userLinks = await linkModel.find(query).lean().exec();
+            const baseUrl = req.protocol + '://' + req.get('host');
+            const links = userLinks.map((link: any) => {
+                return {
+                    id: link?._id,
+                    url: link?.url,
+                    description: link?.description,
+                    alias: `${baseUrl}/${link.alias}`,
+                    created_at: link?.createdAt
+                };
+            });
+
+            // Cache the response
+            // await client.set(userId.toString(), JSON.stringify(links));
+            await client.setKey(userId.toString(), JSON.stringify(links))
+
+            // Return the data from the server
+            return res.status(200).json({
+                fromCache: false,
+                status: true,
+                message: `Links for user ${userId} retrieved from the server`,
+                data: links
+            });
         }
 
-        // If the response is not cached, fetch it from the database
-        const userLinks = await linkModel.find(query).lean().exec();
-        const baseUrl = req.protocol + '://' + req.get('host');
-        const links = userLinks.map((link: any) => {
-            return {
-                id: link?._id,
-                url: link?.url,
-                description: link?.description,
-                alias: `${baseUrl}/${link.alias}`,
-                created_at: link?.createdAt
-            };
-        });
-
-        // Cache the response
-        await client.set(userId.toString(), JSON.stringify(links));
-
-        // Return the data from the server
-        return res.status(200).json({
-            fromCache: false,
-            status: true,
-            message: `Links for user ${userId} retrieved from the server`,
-            data: links
-        });
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({

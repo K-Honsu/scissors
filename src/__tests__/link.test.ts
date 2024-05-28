@@ -2,7 +2,6 @@ import supertest from "supertest";
 import { connect, DatabaseConnection } from "../database";
 import userModel from "../models/user";
 import linkModel from "../models/link";
-import { client } from "../utils/Cache/Redis/index"
 import app from "../main";
 
 
@@ -16,7 +15,6 @@ describe("Link Test", () => {
     });
 
     beforeEach(async () => {
-        await client.connect()
         const user = await userModel.create({
             username: "feragambo1",
             email: "feranmia511@gmail.com",
@@ -29,7 +27,6 @@ describe("Link Test", () => {
                 email: "feranmia511@gmail.com",
                 password: "passwordispassword"
             })
-        console.log(_id)
         token = response.body.token
         _id = response.body.data._id
 
@@ -41,7 +38,7 @@ describe("Link Test", () => {
             createdBy: _id
         })
         const res = await supertest(app)
-            .post("/link")
+            .post("/link/create")
             .set("authorization", `Bearer ${token}`)
             .set("content-type", "application/json")
             .send({
@@ -55,7 +52,6 @@ describe("Link Test", () => {
 
     afterEach(async () => {
         await connection.cleanup();
-        await client.quit()
     }, 50000);
 
     afterAll(async () => {
@@ -64,13 +60,13 @@ describe("Link Test", () => {
 
     test("it should create a link for a successfully logged in user", async () => {
         const response = await supertest(app)
-            .post("/link")
+            .post("/link/create")
             .set("content-type", "application/json")
             .set("authorization", `Bearer ${token}`)
             .send({
                 "url": "https://github.com/prettyirrelevant/giveawayy/blob/dev/payments/services.py",
                 "description": "shorten links",
-                "alias": "https://mynewbadman.com"
+                "alias": "https://mynewbadman19.com"
             })
         expect(response.status).toEqual(201)
         expect(response.body).toMatchObject({
@@ -80,7 +76,7 @@ describe("Link Test", () => {
 
     test("it should get all the link for a successfully logged in user", async () => {
         const response = await supertest(app)
-            .get("/link")
+            .get("/link/links")
             .set("content-type", "application/json")
             .set("authorization", `Bearer ${token}`)
 

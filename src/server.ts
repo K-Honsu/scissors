@@ -3,7 +3,7 @@ import express from "express"
 import { connect } from "./config/db"
 import "./utils/Oauth/passport"
 import http from "http"
-import { client } from "./utils/Cache/Redis/index"
+// import { client } from "./utils/Cache/Redis/index"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -25,6 +25,6 @@ async function createServer() {
 
 
 createServer()
-client.connect()
+// client.connect()
 
 export default createServer

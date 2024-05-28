@@ -31,7 +31,7 @@ const connect = async (url?: string): Promise<void> => {
         console.log("Connected to MongoDB successfully");
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
-        throw error; // Throw the error to indicate connection failure
+        throw error;
     }
 };
 
